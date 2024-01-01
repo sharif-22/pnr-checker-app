@@ -3,5 +3,12 @@
 @tailwind utilities;
 
 .btn-green {
-  @apply bg-green-500 hover:bg-green-400 p-2 lg:p-3 rounded-md font-semibold text-lg text-gray-800;
+  @apply bg-green-500 hover:bg-green-400 p-2 lg:p-3  font-semibold text-lg text-gray-800;
+}
+.station {
+  @apply py-1 px-2 bg-slate-300 rounded-md font-medium text-gray-600;
+}
+
+.tr {
+  @apply text-center py-2 m-2;
 }

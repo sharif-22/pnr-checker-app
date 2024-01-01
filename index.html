@@ -10,7 +10,7 @@
   <body class="bg-blue-400">
     <main class="flex flex-col justify-center items-center gap-4 h-[100dvh]">
       <!-- search pnr form  -->
-      <form class="lg:w-2/5 w-11/12">
+      <form class="xl:w-2/4 w-11/12">
         <div class="flex flex-col gap-2 bg-red-400 p-4 space-y-2 rounded-md">
           <label for="search" class="text-lg">Enter PNR number </label>
           <div class="flex gap-2">
@@ -21,63 +21,52 @@
               type="number"
               placeholder="Enter PNR number "
             />
-            <button class="btn-green" type="submit">Search</button>
+            <button class="btn-green rounded-md" type="submit">Search</button>
           </div>
         </div>
       </form>
       <!-- search pnr form end   -->
 
       <!-- show pnr status  -->
-      <div class="bg-slate-300 p-2 rounded-md space-y-2 lg:w-2/5 w-11/12">
-        <!-- train details  -->
-        <div class="space-y-1.5 p-2 bg-slate-200 rounded-md">
-          <p class="pnrNo font-bold lg:text-xl">
-            PNR : <span>4160147794</span>
-          </p>
-          <p class="trainNameNo font-semibold lg:text-xl">
-            12709 - SIMHAPURI EXP
-          </p>
-          <p class="journeyDate font-medium text-lg">Fri, 05 jan</p>
-          <p class="journeyTime font-normal text-base">
-            NLR, 19:10 -> SC, 05:40
-          </p>
-        </div>
-
-        <!-- Passenger status  -->
-        <div class="p-2 space-y-4">
-          <!-- header  -->
-          <div class="flex justify-between items-center gap-4">
-            <p class="text-gray-900 font-bold lg:text-xl">PASSENGER STATUS</p>
-            <button class="fetchAgainBtn btn-green">Refresh</button>
+      <div
+        class="bg-slate-300 p-2 rounded-md space-y-3 xl:w-2/4 w-11/12 relative"
+      >
+        <div class="lg:flex-row flex flex-col">
+          <!-- train details  -->
+          <div
+            class="flex flex-col items-start justify-center space-y-2 w-full p-2 bg-slate-200 rounded-md"
+          >
+            <p class="pnrNo font-bold lg:text-xl">
+              PNR : <span>4160147794</span>
+            </p>
+            <p class="trainNameNo font-semibold lg:text-xl"></p>
+            <p class="journeyDate font-medium text-lg">Fri, 05 jan</p>
+            <p
+              class="journeyTime font-medium text-base flex gap-2 items-center"
+            >
+              NLR, 19:10 -> SC, 05:40
+            </p>
           </div>
-
-          <!-- status  -->
-
-          <table>
-            <thead>
-              <tr>
-                <th class="p-3 m-3">S.no</th>
-                <th class="p-3 m-3">Current Status</th>
-                <th class="p-3 m-3">Booking Status</th>
-                <th class="p-3 m-3">Coach Postion</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="p-3 m-3 text-center">1</td>
-                <td class="p-3 m-3 text-center">WL 45</td>
-                <td class="p-3 m-3 text-center">WL 45</td>
-                <td class="p-3 m-3 text-center">WL 45</td>
-              </tr>
-              <tr>
-                <td class="p-3 m-3 text-center">2</td>
-                <td class="p-3 m-3 text-center">WL 45</td>
-                <td class="p-3 m-3 text-center">WL 45</td>
-                <td class="p-3 m-3 text-center">WL 45</td>
-              </tr>
-            </tbody>
-          </table>
+          <!-- Passenger status  -->
+          <div class="p-2 w-full space-y-3">
+            <p class="text-gray-900 font-bold lg:text-xl">PASSENGER STATUS</p>
+            <!-- status  -->
+            <table>
+              <thead>
+                <tr>
+                  <th class="p-3">S.no</th>
+                  <th class="p-3">Current Status</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
         </div>
+        <button
+          class="absolute top-1 right-3 bg-blue-500 hover:bg-blue-600 text-2xl font-bold text-white px-2 py-0.5 rounded-full"
+        >
+          X
+        </button>
       </div>
       <!-- show pnr status end  -->
 
