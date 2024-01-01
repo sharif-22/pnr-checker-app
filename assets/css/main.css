@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn-green {
+  @apply bg-green-500 hover:bg-green-400 p-2 lg:p-3 rounded-md font-semibold text-lg text-gray-800;
+}
