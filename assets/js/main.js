@@ -1,90 +1,79 @@
-import axios from "axios";
 import { formatDate, formatTime, createPNRStatusDiv } from "./util";
 
-const pnr = 4160147794;
-const key = "b3c39a47bfmsha85037688538c15p1ce455jsnc84fa7af60bd";
+// dom
+const inputEl = document.querySelector("input");
+const buttonEl = document.querySelector("button");
+const pnrTicketsEl = document.querySelector(".pnrTickets");
 
-const options = {
-  method: "GET",
-  url: `https://pnr-status-indian-railway.p.rapidapi.com/pnr-check/${pnr}`,
-  headers: {
-    "X-RapidAPI-Key": `${key}`,
-    "X-RapidAPI-Host": "pnr-status-indian-railway.p.rapidapi.com",
-  },
-};
+// const getLocalStorage = localStorage.getItem("ticket");
 
-// const response = await axios.request(options);
-// let data = response.data;
-// let obj = Object.assign(data, { pnr: pnr });
-// console.log(obj);
+buttonEl.addEventListener("click", (e) => {
+  e.preventDefault();
+  pnrTicketsEl.innerHTML = "";
+  if (inputEl.value.length === 10) {
+    console.log("value length passed ");
 
-// localStorage.setItem("ticket", JSON.stringify([obj]));
+    async function fetchPNR() {
+      const url = `https://pnr-status-indian-railway.p.rapidapi.com/pnr-check/${inputEl.value}`;
+      const options = {
+        method: "GET",
+        headers: {
+          "X-RapidAPI-Key":
+            "b3c39a47bfmsha85037688538c15p1ce455jsnc84fa7af60bd",
+          "X-RapidAPI-Host": "pnr-status-indian-railway.p.rapidapi.com",
+        },
+      };
 
-const tktObjArr = JSON.parse(localStorage.getItem("ticket"));
-// console.log(tktObjArr);
+      const response = await fetch(url, options);
+      const result = await response.json();
+      console.log(result);
 
-const mainEl = document.querySelector("main");
+      let obj = Object.assign(result, { pnr: inputEl.value });
+      if (localStorage.getItem("ticket") != null) {
+        console.log("getting for local ");
 
-tktObjArr.forEach((element) => {
-  console.log(element);
-  const dt = element.data.trainInfo.dt;
+        const existingLocalArr = JSON.parse(localStorage.getItem("ticket"));
+        const newObjArr = existingLocalArr;
+        console.log(newObjArr);
+        console.log([...newObjArr, obj]);
+        localStorage.setItem("ticket", JSON.stringify([...newObjArr, obj]));
 
-  const journeyTime = `${element.data.boardingInfo.stationCode}: ${formatTime(
-    dt,
-    element.data.boardingInfo.arrivalTime
-  )} --> ${element.data.destinationInfo.stationCode}: ${formatTime(
-    dt,
-    element.data.destinationInfo.arrivalTime
-  )}`;
-
-  const trainName = element.data.trainInfo.trainName;
-  const status = element.data.passengerInfo;
-  mainEl.append(
-    createPNRStatusDiv(element.pnr, trainName, dt, journeyTime, status)
-  );
+        localTickets();
+      } else {
+        console.log("err in geting ");
+        localStorage.setItem("ticket", JSON.stringify([obj]));
+        localTickets();
+      }
+      inputEl.value = "";
+      return result;
+    }
+    fetchPNR();
+  }
 });
 
-// // DOM Elements
-// const trainNameNoEl = document.querySelector(".trainNameNo");
-// const journeyDateEl = document.querySelector(".journeyDate");
-// const journeyTimeEl = document.querySelector(".journeyTime");
-// const tbodyEl = document.querySelector("tbody");
+if (localStorage.getItem("ticket") != null) {
+  pnrTicketsEl.innerHTML = "";
+  localTickets();
+}
 
-// const arrowSvg = `
-// <svg
-//     xmlns="http://www.w3.org/2000/svg"
-//     class="inline-block text-black"
-//     width="28"
-//     height="28"
-//     viewBox="0 0 24 24">
+function localTickets() {
+  const tktObjArr = JSON.parse(localStorage.getItem("ticket"));
 
-//     <path
-//     fill="#000"
-//     d="M16.15 13H5q-.425 0-.712-.288T4 12q0-.425.288-.712T5 11h11.15L13.3 8.15q-.3-.3-.288-.7t.288-.7q.3-.3.713-.312t.712.287L19.3 11.3q.15.15.213.325t.062.375q0 .2-.062.375t-.213.325l-4.575 4.575q-.3.3-.712.288t-.713-.313q-.275-.3-.288-.7t.288-.7z"/>
-// </svg>
-// `;
+  tktObjArr.forEach((element) => {
+    // console.log(element);
+    const dt = `journey date: ${element.data.trainInfo.dt}`;
+    const journeyTime = `${element.data.boardingInfo.stationCode}: ${formatTime(
+      new Date().getDate(),
+      element.data.boardingInfo.arrivalTime
+    )} --> ${element.data.destinationInfo.stationCode}: ${formatTime(
+      new Date().getDate(),
+      element.data.destinationInfo.arrivalTime
+    )}`;
+    const trainInfo = `${element.data.trainInfo.trainNo} - ${element.data.trainInfo.name}`;
+    const status = element.data.passengerInfo;
 
-// // global variables
-// const data = tktObj.data;
-// const journeyDate = formatDate(data.trainInfo.dt);
-
-// const boardingTime = formatTime(journeyDate, data.boardingInfo.arrivalTime);
-
-// const destinationTime = formatTime(
-//   journeyDate,
-//   data.destinationInfo.arrivalTime
-// );
-
-// const currentStatus = data.passengerInfo;
-
-// // setting content
-// trainNameNoEl.innerText = `${data.trainInfo.trainNo} - ${data.trainInfo.name}`;
-// journeyDateEl.innerText = `${journeyDate}`;
-// journeyTimeEl.innerHTML = `<span class="station">${data.trainInfo.boarding}</span> ${boardingTime} ${arrowSvg}  <span class="station">${data.trainInfo.destination}</span> ${destinationTime}`;
-
-// console.log(currentStatus);
-
-// currentStatus.forEach((element, index) => {
-//   console.log(index + 1, element["currentCoach"], element["currentBerthNo"]);
-//   tbodyEl.append(createTr(element, index + 1));
-// });
+    pnrTicketsEl.append(
+      createPNRStatusDiv(element.pnr, trainInfo, dt, journeyTime, status)
+    );
+  });
+}
